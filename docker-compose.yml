@@ -1,0 +1,21 @@
+version: '3.9'
+services:      
+  app:
+    image: ghcr.io/thomiceli/opengist:latest
+    container_name: opengist
+    restart: always
+    ports:
+      - ${APP_PORT}:6157
+      - ${SSH_PORT}:2222
+    networks:
+      - default
+    volumes:
+      - "$HOME/.opengist:/opengist"
+
+networks:
+  default:
+    driver: bridge
+
+volumes:
+  data:
+    driver: local
