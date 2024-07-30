@@ -1,6 +1,6 @@
-# 🎉 Docker Gitea
+# 🎉 Docker Opengist
 
-Gitea is a lightweight, self-hosted Git service offering repository hosting, issue tracking, pull requests, and wiki support. Designed for simplicity and performance, it is easy to install and configure, making it ideal for teams of all sizes looking to manage their projects efficiently.
+OpenGist is a collaborative platform for sharing and discovering code snippets, scripts, and notes. Users can easily create, fork, and contribute to gists, enabling seamless collaboration and code reuse. Ideal for developers, educators, and learners to share knowledge efficiently.
 
 ![version](https://img.shields.io/badge/version-1.0-blue)
 ![rating](https://img.shields.io/badge/rating-★★★★★-yellow)
@@ -8,7 +8,7 @@ Gitea is a lightweight, self-hosted Git service offering repository hosting, iss
 
 ### 🏆 Run
 
-- [http://localhost:3000/](http://localhost:3000/) username : `admin` password : `admin`
+- [http://localhost:6157/](http://localhost:6157/) username : `admin` password : `admin`
 
 ```shell
 docker-compose up -d
