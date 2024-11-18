@@ -14,8 +14,10 @@ services:
 
 networks:
   default:
+    name: docker_opengist_network
     driver: bridge
 
 volumes:
   data:
+    name: docker_opengist_data
     driver: local
