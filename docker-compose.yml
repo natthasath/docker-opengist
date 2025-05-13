@@ -1,23 +1,29 @@
-version: '3.9'
-services:      
-  app:
-    image: ghcr.io/thomiceli/opengist:latest
-    container_name: opengist
-    restart: always
+services:
+  opengist:
+    container_name: ${OPENGIST_CONTAINER_NAME}
+    image: ${OPENGIST_IMAGE_NAME}:${OPENGIST_IMAGE_VERSION}
+    restart: ${RESTART_POLICY}
+    environment:
+      - TZ=${TIMEZONE}
     ports:
-      - ${APP_PORT}:6157
-      - ${SSH_PORT}:2222
+      - ${OPENGIST_HTTP_PORT}:6157
+      - ${OPENGIST_SSH_PORT}:2222
+    volumes:
+      - ${OPENGIST_DATA_PATH}:/opengist
     networks:
       - default
-    volumes:
-      - "$HOME/.opengist:/opengist"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:6157"]
+      interval: ${HEALTHCHECK_INTERVAL}
+      timeout: ${HEALTHCHECK_TIMEOUT}
+      retries: ${HEALTHCHECK_RETRIES}
 
 networks:
   default:
-    name: docker_opengist_network
+    name: opengist_network
     driver: bridge
 
 volumes:
-  data:
-    name: docker_opengist_data
+  default:
+    name: opengist_data
     driver: local
