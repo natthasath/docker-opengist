@@ -20,10 +20,10 @@ services:
 
 networks:
   default:
-    name: opengist_network
+    name: ${OPENGIST_CONTAINER_NAME}_network
     driver: bridge
 
 volumes:
   default:
-    name: opengist_data
+    name: ${OPENGIST_CONTAINER_NAME}_data
     driver: local
