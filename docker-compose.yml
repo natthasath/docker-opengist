@@ -1,3 +1,5 @@
+name: ${GLOBAL_NAME}
+
 services:
   opengist:
     container_name: ${OPENGIST_CONTAINER_NAME}
@@ -5,18 +7,44 @@ services:
     restart: ${RESTART_POLICY}
     environment:
       - TZ=${TIMEZONE}
+      - OPENGIST_DB_TYPE=postgres
+      - OPENGIST_DB_HOST=postgres
+      - OPENGIST_DB_PORT=5432
+      - OPENGIST_DB_NAME=${POSTGRES_DATABASE}
+      - OPENGIST_DB_USER=${POSTGRES_USER}
+      - OPENGIST_DB_PASSWORD=${POSTGRES_PASSWORD}
+      - OPENGIST_ROOT_URL=${OPENGIST_APP_URL}:${OPENGIST_HTTP_PORT}
     ports:
       - ${OPENGIST_HTTP_PORT}:6157
       - ${OPENGIST_SSH_PORT}:2222
     volumes:
-      - ${OPENGIST_DATA_PATH}:/opengist
+      - default:/opengist
+      - opengist_ssh:/etc/ssh
     networks:
       - default
+    depends_on:
+      - postgres
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:6157"]
       interval: ${HEALTHCHECK_INTERVAL}
       timeout: ${HEALTHCHECK_TIMEOUT}
       retries: ${HEALTHCHECK_RETRIES}
+  
+  postgres:
+    container_name: ${POSTGRES_CONTAINER_NAME}
+    image: ${POSTGRES_IMAGE_NAME}:${POSTGRES_IMAGE_VERSION}
+    restart: ${RESTART_POLICY}
+    environment:
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_DB=${POSTGRES_DATABASE}
+      - TZ=${TIMEZONE}
+    ports:
+      - ${POSTGRES_PORT}:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - default
 
 networks:
   default:
@@ -26,4 +54,10 @@ networks:
 volumes:
   default:
     name: ${OPENGIST_CONTAINER_NAME}_data
+    driver: local
+  postgres_data:
+    name: ${POSTGRES_CONTAINER_NAME}_data
+    driver: local
+  opengist_ssh:
+    name: ${OPENGIST_CONTAINER_NAME}_ssh
     driver: local
